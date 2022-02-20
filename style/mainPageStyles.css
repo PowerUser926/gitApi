@@ -1,0 +1,190 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.header {
+    margin-bottom: 5px;
+    padding: 0 7%;
+    background-color: #24292f;
+    color: #fff;
+}
+
+.wrap {
+    width: 85%;
+    margin: 0 auto;
+    background-color: #fff;
+}
+
+.searchUserBlock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 5px;
+}
+
+.userNameInp {
+    width: 80%;
+    height: 27px;
+    margin-left: 20px;
+    padding: 4px 5px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+}
+
+.userNameInp:focus {
+    outline-style: none;
+}
+
+.searchBtn {
+    height: 27px;
+    width: 50px;
+    padding: 3px 7px;
+    background: #2da44e url("../img/search.svg") no-repeat center center;
+    background-size: 40%;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.searchBtn:hover {
+    background-color: #36d566;
+    color: #fff;
+}
+
+.userDataBlock {
+    display: none;
+    padding: 10px 0;
+}
+
+.userBioBlock {
+    display: flex;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.userBioBlock div {
+    margin-left: 65px;
+    padding: 20px 0;
+}
+
+.userPhotoOut {
+    width: 260px;
+    height: 260px;
+    border: 2px solid lightgray;
+    border-radius: 50%;
+}
+
+.userNameOut {
+    margin-bottom: 5px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.userLoginOut {
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: gray;
+}
+
+.userBioOut {
+    margin: 20px 0;
+}
+
+.followPerson, .userLocationOut, .userBlogOut {
+    position: relative;
+    margin-bottom: 10px;
+    margin-left: 25px;
+}
+
+.userBlogOut:hover {
+    border-bottom: 1px solid;
+}
+
+.reposListOut {
+    border-top: 1px solid lightgray;
+}
+
+.repos {
+    padding: 15px 0;
+    border-bottom: 1px solid lightgray;
+}
+
+.repos div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.repos div:first-child {
+    justify-content: space-between;
+}
+
+.reposNameOut {
+    color: #0969da;
+    font-size: 22px;
+    transition: .3s;
+    cursor: pointer;
+}
+.reposNameOut:hover {
+    color: #052f5e;
+}
+
+.reposLangOut {
+    width: 130px;
+}
+
+.reposUpdateOut, .reposStarsOut, .reposUrlOut {
+    position: relative;
+    margin-left: 25px;
+}
+
+.followPerson:before, .userLocationOut:before,
+.userBlogOut:before, .reposUpdateOut:before,
+.reposUrlOut:before, .reposStarsOut:before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -25px;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+}
+.followPerson:before {
+    background: url('../img/people.svg') no-repeat center center;
+}
+.userLocationOut:before {
+    background: url('../img/location.svg') no-repeat center center;
+}
+.userBlogOut:before, .reposUrlOut:before  {
+    background: url('../img/link.svg') no-repeat center center;
+}
+.reposUpdateOut:before  {
+    background: url('../img/calendar.svg') no-repeat center center;
+}
+.reposStarsOut:before {
+    content: '\2605';
+    text-align: center;
+    font-size: 24px;
+    line-height: .8;
+    color: #ffdd00;
+}
+.reposLangOut {
+    display: flex;
+    align-items: center;
+}
+.langBadge {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    border-radius: 50%;
+}
