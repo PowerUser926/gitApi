@@ -12,7 +12,8 @@ async function getData() {
     return repos;
 }
 
-async function outReposData(){
+async function outReposData() {
+    //use const
     let repos = await getData();
 
     const reposNameEl = document.querySelector('.reposName');
@@ -21,6 +22,7 @@ async function outReposData(){
     const reposCreatedDateEl = document.querySelector('.reposCreatedDate');
     const reposBodyEl = document.querySelector('.reposBody');
 
+    //use destructuring 
     reposNameEl.innerHTML = repos.name;
     reposVisibilityEl.innerHTML = repos.visibility;
     reposBranchEl.innerHTML = repos.default_branch;
@@ -28,11 +30,14 @@ async function outReposData(){
     reposCreatedDateEl.innerHTML = 'Created: ' + reposCreatedDate;
     let reposObjEntries = Object.entries(repos);
     console.log(reposObjEntries);
-    reposObjEntries.forEach(prop=>{
-        reposBodyEl.innerHTML += `<p><span class="propName">${prop[0]}: </span> <span class="propValue">${prop[1]}</span></p>`
+    //const arr = [1,2]
+    //const [one, two] = arr
+    reposObjEntries.forEach(([key, value])=>{
+        reposBodyEl.innerHTML += `<p><span class="propName">${key}: </span> <span class="propValue">${value}</span></p>`
     })
 }
 
+//it's just a link?
 function backToMainPage() {
     let backBtn = document.querySelector('.backToMainPage');
     backBtn.addEventListener('click', () => {
