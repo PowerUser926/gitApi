@@ -1,10 +1,11 @@
-window.onload = async ()=>{
+window.onload = ()=>{
     if (sessionStorage.getItem('username')){
         let username = sessionStorage.getItem('username');
         const searchUserField = document.querySelector('.userNameInp');
         searchUserField.value = username;
         userName = username;
-        await showUser(username);
+        // we don't need await here
+        showUser(username);
     }
 };
 
@@ -19,34 +20,40 @@ searchBtn.addEventListener('click', async () => {
 });
 
 async function getUser(username) {
-    const user = await fetch(`https://api.github.com/users/${username}`);
-    const userDATA = user.json();
-    return userDATA;
+    const response = await fetch(`https://api.github.com/users/${username}`);
+    const data = response.json();
+    return data;
 }
 
 async function getUserRepos(username) {
-    const repos = await fetch(`https://api.github.com/users/${username}/repos?per_page=999`);
-    const reposDATA = repos.json();
-    return reposDATA;
+    const response = await fetch(`https://api.github.com/users/${username}/repos?per_page=999`);
+    const data = response.json();
+    return data;
 }
 
 async function getTopReposList(username) {
-    let reposList = await getUserRepos(username);
-    console.log(reposList);
+  //list is a little redundant - you can name it just repos
+  let reposList = await getUserRepos(username);
+  //clean console.log
+  console.log(reposList);
+  //look at sort method in Array - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
     let topReposList = [];
-    for (let i = 0; i < reposList.length; i++) {
-        if (reposList[i].stargazers_count > 0 && topReposList.length < 10) {
-            topReposList.push(reposList[i]);
-        }
+    //try to sort reposList and take first 10 elements
+    //array.sort().slice(10)
+  for (let i = 0; i < reposList.length; i++) {
+    if (reposList[i].stargazers_count > 0 && topReposList.length < 10) {
+      topReposList.push(reposList[i]);
     }
+  }
 
-    for (let i = 0; i < reposList.length; i++) {
-        if (reposList[i].stargazers_count == 0 && topReposList.length < 10) {
-            topReposList.push(reposList[i]);
-        }
+  for (let i = 0; i < reposList.length; i++) {
+    // don't use ==
+    if (reposList[i].stargazers_count == 0 && topReposList.length < 10) {
+      topReposList.push(reposList[i]);
     }
+  }
 
-    return topReposList;
+  return topReposList;
 }
 
 async function showUser(username) {
@@ -75,6 +82,7 @@ async function showUser(username) {
     userBlogEl.href = user.blog;
     userBlogEl.innerHTML = user.blog;
     if (!user.location) {
+        // use classes
         userLocationEl.style.display = 'none';
     } else {
         userLocationEl.style.display = 'block';
@@ -85,8 +93,8 @@ async function showUser(username) {
         userBlogEl.style.display = 'block';
     }
 
-    await showUserRepos(username);
-
+    showUserRepos(username);
+    // clean console.log please
     console.log(user);
 }
 
@@ -96,6 +104,7 @@ async function showUserRepos(username) {
     let reposList = await getTopReposList(username);
 
     const reposListEl = document.querySelector('.reposListOut');
+    // move to function removeRepos
     const reposEl = document.querySelectorAll('.repos');
     if (reposEl.length > 0){
         for (let i=0; i<reposEl.length; i++){
@@ -105,8 +114,11 @@ async function showUserRepos(username) {
 
     for (const repos of reposList) {
         let reposUpdateDate = repos.updated_at;
+        //if you use regular expression write comments
+        //try to use Data js - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
         reposUpdateDate = reposUpdateDate.replace(/t/i, ' ').replace(/z/i, '').replace(/-/g, '.');
-
+        //use destructuring
+        //const {id, name, language, stargazers_count, html_url} = repos
         reposListEl.innerHTML += `
             <div class="repos">
                 <div>
@@ -121,13 +133,39 @@ async function showUserRepos(username) {
             </div>
         `;
     }
-
+    const REPOS_LANGUAGES = {
+      TypeScript: 'TypeScript',
+      HTML: 'HTML',
+        CSS: 'CSS',
+        JavaScript: 'JavaScript',
+      None: 'null'
+    };
+    //magic numbers - numbers without explaining what it is
     const reposLangOutEl = document.querySelectorAll('.reposLangOut');
     for (let i = 0; i < reposLangOutEl.length; i++) {
         const langBadgeEl = reposLangOutEl[i].querySelector('.langBadge');
-        if (reposLangOutEl[i].textContent == 'JavaScript'){
+        console.log('lang badge element ===> ', langBadgeEl)
+        // use switch
+        //TODO: rewrite to switch
+        // switch (reposLangOutEl[i].textContent) {
+        //   case REPOS_LANGUAGES.HTML:
+        //     langBadgeEl.style.backgroundColor = '#e34c26';
+        //   case REPOS_LANGUAGES.JavaScript:
+        //     langBadgeEl.style.backgroundColor = '#ffdd00';
+        //   case REPOS_LANGUAGES.TypeScript:
+        //     langBadgeEl.style.backgroundColor = '#2b7489';
+        //   case REPOS_LANGUAGES.CSS:
+        //     langBadgeEl.style.backgroundColor = '#563d7c';
+        //   case REPOS_LANGUAGES.None:
+        //         reposLangOutEl[i].style.display = 'none';
+        //     default:
+        //         langBadgeEl.style.backgroundColor = '#939292';
+        // }
+        if (reposLangOutEl[i].textContent == 'JavaScript') {
+            //use classes here
             langBadgeEl.style.backgroundColor = '#ffdd00';
-        } else if (reposLangOutEl[i].textContent == 'HTML') {
+            //use constants for colors and other languages
+        } else if (reposLangOutEl[i].textContent ==REPOS_LANGUAGES.HTML) {
             langBadgeEl.style.backgroundColor = '#e34c26';
         } else if (reposLangOutEl[i].textContent == 'CSS') {
             langBadgeEl.style.backgroundColor = '#563d7c';
@@ -146,13 +184,14 @@ async function showUserRepos(username) {
 async function toReposDetailsPage(id) {
     let reposList = await getTopReposList(userName);
     let currentRepos;
-    reposList.forEach(repos=>{
-        if(repos.id == id){
-            currentRepos = repos;
+    reposList.forEach(repo=>{
+        if(repo.id == id){
+            currentRepos = repo;
         }
     })
     currentRepos = JSON.stringify(currentRepos);
     sessionStorage.setItem('username', userName);
     sessionStorage.setItem('repos', currentRepos);
+    //TODO: look does it works local, github
     window.location.href = '../gitApi-homework-master/reposDetails.html';
 }
